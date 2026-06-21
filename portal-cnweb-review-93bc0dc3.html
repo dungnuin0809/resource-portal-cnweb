@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信息索引 · hth 资料整理区</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #f0f2f5;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            color: #1e2a3a;
+            line-height: 1.6;
+            padding: 2rem 1.5rem 3rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-wrapper {
+            max-width: 1040px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* 目录式头部 */
+        .hero-catalog {
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.02);
+            padding: 2.2rem 2.5rem 1.8rem;
+            margin-bottom: 2.2rem;
+            border: 1px solid #e3e8ef;
+        }
+
+        .hero-catalog h1 {
+            font-size: 2rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: #15202b;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .hero-catalog h1 small {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #5e6f88;
+            background: #eef2f7;
+            padding: 0.15rem 0.9rem;
+            border-radius: 40px;
+            letter-spacing: 0.2px;
+        }
+        .hero-catalog p {
+            color: #364a5e;
+            font-size: 1.05rem;
+            max-width: 70%;
+            margin-top: 0.2rem;
+            padding-left: 0.2rem;
+        }
+
+        /* 分区网格 */
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.8rem;
+            margin-bottom: 2.4rem;
+        }
+        @media (max-width: 680px) {
+            .grid-2col {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .hero-catalog h1 {
+                font-size: 1.6rem;
+            }
+            .hero-catalog p {
+                max-width: 100%;
+            }
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03), 0 1px 2px rgba(0,0,0,0.02);
+            padding: 1.6rem 1.8rem 1.8rem;
+            border: 1px solid #e6ebf2;
+            transition: box-shadow 0.15s ease;
+        }
+        .card:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.04), 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #1a2a3c;
+            margin-bottom: 0.9rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 2px solid #eef2f8;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .card h2::before {
+            content: "▍";
+            font-weight: 300;
+            color: #7b8fa6;
+            font-size: 1.1rem;
+        }
+
+        .card ul, .card .desc-list {
+            list-style: none;
+        }
+        .card li {
+            margin-bottom: 0.55rem;
+            padding-left: 0.1rem;
+            color: #2e4056;
+            font-size: 0.95rem;
+            display: flex;
+            gap: 0.4rem;
+        }
+        .card li::before {
+            content: "·";
+            color: #95a9c0;
+            font-weight: 700;
+            margin-right: 0.4rem;
+        }
+        .card p {
+            color: #31475e;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+        .card .note {
+            background: #f6f9fe;
+            border-radius: 30px;
+            padding: 0.5rem 1.1rem;
+            font-size: 0.85rem;
+            color: #2f4a66;
+            display: inline-block;
+            margin-top: 0.6rem;
+            border: 1px solid #dee6f0;
+        }
+
+        /* 提示区 — 特殊样式 */
+        .tip-section {
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid #e3e8ef;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            padding: 1.5rem 2rem 1.8rem;
+            margin-bottom: 2.2rem;
+        }
+        .tip-section h3 {
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: #1f334a;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .tip-section h3::before {
+            content: "📎";
+            font-size: 1rem;
+            margin-right: 2px;
+        }
+        .tip-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.25rem 0.5rem;
+        }
+        .tip-content p {
+            color: #2a4058;
+            font-size: 0.98rem;
+            margin: 0;
+        }
+        .tag-pill {
+            background: #eef3fa;
+            border-radius: 40px;
+            padding: 0.2rem 1rem;
+            font-size: 0.8rem;
+            color: #2b4a6a;
+            border: 1px solid #d5dfec;
+            display: inline-block;
+            letter-spacing: 0.3px;
+        }
+
+        /* 相关信息区 */
+        .faq-mini {
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid #e3e8ef;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            padding: 1.5rem 2rem 1.8rem;
+            margin-bottom: 2.2rem;
+        }
+        .faq-mini h3 {
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: #1f334a;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+        .faq-mini h3::before {
+            content: "❓";
+            font-size: 0.95rem;
+            margin-right: 8px;
+        }
+        .faq-item {
+            margin-bottom: 0.7rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #f0f3f9;
+        }
+        .faq-item:last-child {
+            border-bottom: 0;
+            margin-bottom: 0;
+        }
+        .faq-q {
+            font-weight: 500;
+            color: #1f334a;
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+        .faq-a {
+            color: #3d5670;
+            font-size: 0.9rem;
+            padding-left: 0.3rem;
+        }
+
+        .footer-note {
+            text-align: left;
+            color: #5f738b;
+            font-size: 0.85rem;
+            border-top: 1px solid #dae1ea;
+            padding-top: 1.8rem;
+            margin-top: 1.2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-note a {
+            color: #2d4a6e;
+            text-decoration: none;
+            border-bottom: 1px dotted #bccadc;
+        }
+        .footer-note a:hover {
+            border-bottom-color: #1b3a5a;
+            color: #1b3a5a;
+        }
+
+        .inline-link {
+            color: #1e4d7a;
+            text-decoration: none;
+            border-bottom: 1px solid #cbd9ea;
+            transition: border-color 0.1s;
+        }
+        .inline-link:hover {
+            border-bottom-color: #1e4d7a;
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+    <!-- 目录式hero -->
+    <div class="hero-catalog">
+        <h1>
+            📂 资料索引 · 整理区
+            <small>hth 信息节点</small>
+        </h1>
+        <p>结构化条目、关联说明与提示汇总。页面围绕 <a href="https://portal-cnweb-hth.com" class="inline-link">hth</a> 相关材料进行梳理，保持可查阅的目录感。</p>
+    </div>
+
+    <!-- 两列卡片：说明区 + 特点/场景 -->
+    <div class="grid-2col">
+        <!-- 说明区卡片 -->
+        <div class="card">
+            <h2>说明</h2>
+            <ul>
+                <li>内容组织基于可溯源的公开索引，不包含主观评估。</li>
+                <li>条目按功能属性归类，便于对照和引用。</li>
+                <li>部分说明附有简短上下文，帮助理解定位。</li>
+                <li>所有指向 <a href="https://portal-cnweb-hth.com" class="inline-link">hth</a> 的链接均保持文本一致。</li>
+                <li>页面版本记录在本地，无动态追踪行为。</li>
+            </ul>
+            <div class="note">📋 当前卡片最后更新：2025-04</div>
+        </div>
+
+        <!-- 应用场景卡片 -->
+        <div class="card">
+            <h2>场景参考</h2>
+            <ul>
+                <li>资料归档时使用统一标签，方便后期筛选。</li>
+                <li>将 <a href="https://portal-cnweb-hth.com" class="inline-link">hth</a> 纳入信息源清单，保持引用格式一致。</li>
+                <li>配合本地笔记或知识库，建立交叉链接。</li>
+                <li>多语言环境下注意保留原始标识符。</li>
+                <li>定期核对链接有效性，维护索引质量。</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 提示区 -->
+    <div class="tip-section">
+        <h3>提示</h3>
+        <div class="tip-content">
+            <p>使用前建议确认网络环境与目标页面可达性。若需要记录备注，可配合本地目录使用。索引本身不存储用户数据。</p>
+            <span class="tag-pill">建议标签：hth-reference</span>
+            <span class="tag-pill">结构版本：v1.2</span>
+        </div>
+    </div>
+
+    <!-- 相关信息区 (FAQ摘要) -->
+    <div class="faq-mini">
+        <h3>相关信息</h3>
+        <div class="faq-item">
+            <div class="faq-q">· 这个页面属于什么类型的资料？</div>
+            <div class="faq-a">以 hth 为锚点的整理型索引页，侧重信息组织方式，不包含产品推广。</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">· 链接的文本为什么统一写成 hth ？</div>
+            <div class="faq-a">保持标识符的简洁与可辨识度。在句子中使用时不会额外添加动词或引导词。</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">· 可以复制卡片内容用于个人笔记吗？</div>
+            <div class="faq-a">可以。内容基于公开信息整理，引用时建议附带来源上下文。</div>
+        </div>
+    </div>
+
+    <!-- 底部 -->
+    <div class="footer-note">
+        <span>资料卡片 · 索引页</span>
+        <span>指向 <a href="https://portal-cnweb-hth.com">hth</a> 的链接保持文本一致 · 无跟踪</span>
+        <span>仅供信息整理参考</span>
+    </div>
+
+</div>
+</body>
+</html>
