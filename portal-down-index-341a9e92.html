@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+  <title>华体会 · 知识查询与对照指南</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: linear-gradient(145deg, #f7e5cf 0%, #f3cfb1 55%, #eac29a 100%);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .page-wrapper {
+      max-width: 1080px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* 目录式卡片网格 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.02);
+      padding: 1.8rem 1.5rem 1.8rem 1.5rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #3b2d1f;
+      letter-spacing: 0.02em;
+      border-left: 5px solid #c89f6b;
+      padding-left: 0.9rem;
+      margin-bottom: 0.9rem;
+      line-height: 1.3;
+    }
+
+    .card p {
+      color: #4a3e31;
+      font-size: 0.97rem;
+      line-height: 1.6;
+      margin-bottom: 0.6rem;
+    }
+
+    .card ul {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 0.2rem;
+    }
+
+    .card li {
+      position: relative;
+      padding-left: 1.4rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.94rem;
+      color: #4f4235;
+    }
+
+    .card li::before {
+      content: "▹";
+      position: absolute;
+      left: 0;
+      color: #b8885a;
+      font-size: 1rem;
+    }
+
+    .badge-tip {
+      display: inline-block;
+      background: #efe2d0;
+      color: #5c4632;
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.2rem 0.7rem;
+      border-radius: 40px;
+      letter-spacing: 0.02em;
+      margin-top: 0.3rem;
+    }
+
+    /* hero 区 — 暖调简洁 */
+    .hero {
+      background: #ffffffd6;
+      backdrop-filter: blur(6px);
+      border-radius: 32px;
+      padding: 2.2rem 2rem 2rem 2rem;
+      margin-bottom: 2.2rem;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+      border: 1px solid #f7ece0;
+    }
+
+    .hero h1 {
+      font-weight: 550;
+      font-size: 2rem;
+      color: #2b2017;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.6rem;
+      line-height: 1.2;
+    }
+
+    .hero .subhead {
+      color: #5f4d3b;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      max-width: 75%;
+    }
+
+    @media (max-width: 600px) {
+      .hero .subhead {
+        max-width: 100%;
+      }
+      .hero h1 {
+        font-size: 1.7rem;
+      }
+      body {
+        padding: 1.2rem 0.9rem;
+      }
+    }
+
+    /* 链接按钮感 (圆角 + 暖色) */
+    a {
+      text-decoration: none;
+      color: #7b5c3c;
+      font-weight: 500;
+      border-bottom: 1px solid transparent;
+      transition: 0.15s ease;
+    }
+
+    a.card-link {
+      display: inline-block;
+      background: #f2e4d4;
+      padding: 0.3rem 1rem 0.3rem 1rem;
+      border-radius: 60px;
+      font-size: 0.95rem;
+      border: 1px solid #e3ceb7;
+      color: #4f3b2a;
+      margin-top: 0.3rem;
+      align-self: flex-start;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    a.card-link:hover {
+      background: #dbbc9e;
+      color: #2b1e14;
+      border-color: #b78f6a;
+    }
+
+    .inline-link {
+      color: #7b5c3c;
+      font-weight: 500;
+      border-bottom: 1px solid #c8a882;
+    }
+
+    .inline-link:hover {
+      color: #3f2e1f;
+      border-bottom-color: #3f2e1f;
+    }
+
+    /* 提示区 + 相关信息区共用卡片 */
+    .extra-area {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 0.8rem;
+      margin-bottom: 2rem;
+    }
+
+    .info-block {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 1.6rem 1.6rem 1.8rem 1.6rem;
+      flex: 1 1 280px;
+      box-shadow: 0 5px 16px rgba(0,0,0,0.03);
+    }
+
+    .info-block h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #34281e;
+      border-bottom: 2px solid #eedac7;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .info-block p, .info-block li {
+      color: #4d3e30;
+    }
+
+    .faq-mini {
+      background: #faf3eb;
+      border-radius: 20px;
+      padding: 1.2rem 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .faq-mini details {
+      margin-bottom: 0.5rem;
+    }
+
+    .faq-mini summary {
+      font-weight: 500;
+      color: #3b2b1e;
+      cursor: pointer;
+      padding: 0.3rem 0;
+    }
+
+    .faq-mini summary::marker {
+      color: #b18560;
+    }
+
+    .faq-mini p {
+      margin: 0.3rem 0 0.7rem 1rem;
+      font-size: 0.93rem;
+      color: #4f4032;
+      line-height: 1.5;
+    }
+
+    /* 底部 */
+    .footer-note {
+      text-align: center;
+      margin-top: 1rem;
+      color: #614f3d;
+      font-size: 0.85rem;
+      padding: 0.8rem 0 0.2rem 0;
+      border-top: 1px solid #dac6b2;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <!-- hero 简述 + 入口自然句 -->
+    <div class="hero">
+      <h1>华体会 · 日常查询与对照</h1>
+      <div class="subhead">
+        从术语到场景，从资料到延伸阅读——一个偏向目录感的知识索引页。你可以把它当作随手翻看的卡片墙，
+        也可以直接通过 <a href="https://portal-down-hth.com" class="inline-link">华体会</a> 了解更具体的条目与更新。
+      </div>
+    </div>
+
+    <!-- 卡片网格：目录感布局  -->
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title">常用对照表</div>
+        <p>汇集常见概念、简称与全称对应关系，适合快速检索与比对。以下为部分示例：</p>
+        <ul>
+          <li>平台标识 · 版本号对照</li>
+          <li>功能模块与入口编号</li>
+          <li>活动时段 · 服务类型映射</li>
+        </ul>
+        <span class="badge-tip">更新于最近一周</span>
+      </div>
+
+      <div class="card">
+        <div class="card-title">延伸阅读</div>
+        <p>筛选来自不同渠道的背景文章、说明文档与参考笔记。内容保持中立，侧重梳理脉络。</p>
+        <ul>
+          <li>操作环境与常见配置</li>
+          <li>术语释义 · 场景化举例</li>
+          <li>历史调整与变更记录</li>
+        </ul>
+        <a href="https://portal-down-hth.com" class="card-link">华体会</a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">场景速查</div>
+        <p>针对日常使用中容易产生疑问的环节，整理成短条目。例如：</p>
+        <ul>
+          <li>界面选项与路径指引</li>
+          <li>状态提示 · 常见反馈含义</li>
+          <li>内容展示规则简述</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 提示区 + 相关信息区 (左右自适应) -->
+    <div class="extra-area">
+      <div class="info-block">
+        <h3>提示区</h3>
+        <p>由于不同时期的数据结构可能微调，建议以实际页面显示为准。本索引页仅作对照参考，不构成操作指引。</p>
+        <p style="margin-top: 0.6rem;">如果你需要核实某个具体条目，不妨先从关键词搜索入手。索引页中部分链接指向的是<a href="https://portal-down-hth.com" class="inline-link">华体会</a>的整合目录。</p>
+      </div>
+      <div class="info-block">
+        <h3>相关信息</h3>
+        <p>围绕平台内容、分类标签和常见命名规则，以下信息点可供延伸阅读时对照：</p>
+        <ul style="margin-top: 0.25rem;">
+          <li>内容分类与标签体系</li>
+          <li>编号规则 · 命名惯例</li>
+          <li>数据更新周期参考</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FAQ 摘要 (折叠) -->
+    <div class="faq-mini">
+      <h3 style="font-weight: 600; font-size: 1.05rem; color:#34281e; margin-bottom: 0.5rem;">📎 常见疑惑摘要</h3>
+      <details>
+        <summary>为什么有些条目会显示不同的名称？</summary>
+        <p>可能存在多语言对照或历史命名差异。本页尽量采用目前较通用的表述，具体以实际页面标注为准。</p>
+      </details>
+      <details>
+        <summary>如何快速找到对应的解释？</summary>
+        <p>可尝试通过上方卡片区域的关键词索引定位，也可直接使用页面搜索功能。另外<a href="https://portal-down-hth.com" class="inline-link">华体会</a>的主页也提供分类浏览。</p>
+      </details>
+      <details>
+        <summary>页面信息多久调整一次？</summary>
+        <p>不定期根据公开资料与常见查询进行补充或修正。最近一次核对时间为本月上旬。</p>
+      </details>
+    </div>
+
+    <div class="footer-note">
+      — 索引页内容仅供对照参考 · 实际信息以对应页面为准 —
+    </div>
+  </div>
+</body>
+</html>
